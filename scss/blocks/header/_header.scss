@@ -1,0 +1,59 @@
+.header {
+    width: 100%;
+    padding: 8px 100px;
+    z-index: 9;
+    position: fixed;
+    .header-left-block {
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        min-width: 550px;
+    }
+    .layout {
+        width: 90%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-height: 78px;
+        transition: all 0.35s linear;
+    }
+    .header-links {
+        display: flex;
+        align-items: center;
+    }
+    .btn{
+        transition: all 0.35s linear
+    }
+}
+.heder_active {
+    background-color: rgba($color: white, $alpha: 0.8);
+    .btn{
+        padding: 16px 20px;
+        font-size: 14px ;
+        box-shadow: none;
+        &:hover{
+            background-color: lighten($color-blue-dark, 5%);
+        }
+    }
+}
+.header-logo {
+    width: 86px;
+}
+.header__link {
+    position: relative;
+    margin-right: 45px;
+    font-weight: 700;
+    font-size: 18px;
+    color: $color-main-black;
+    &::after {
+        content: "";
+        position: absolute;
+        display: block;
+        width: 110%;
+        left: -5%;
+        bottom: -1px;
+        z-index: -1;
+        height: 3px;
+        background: $color-green-dark;
+    }
+}

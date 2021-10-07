@@ -1,0 +1,22 @@
+.footer {
+    box-sizing: border-box;
+    min-height: 180px;
+    background-color: $color-main-black;
+    padding: 45px 0 50px 0;
+    color: #fff;
+    .container {
+        height: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+    }
+    .call {
+        text-align: right;
+    }
+}
+.link {
+    display: block;
+    margin-top: 15px;
+    font-size: 16px;
+    color: #fff;
+}

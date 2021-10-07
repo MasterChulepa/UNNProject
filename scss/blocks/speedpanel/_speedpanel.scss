@@ -1,0 +1,32 @@
+.sidepanel-body {
+    z-index: 5;
+    position: fixed;
+    left: 15px;
+    top: 240px;
+    height: 400px;
+    width: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+.sidepanel-text {
+    width: 120px;
+    height: 120px;
+    font-size: 14px;
+    font-weight: 700;
+}
+.sidepanel-text span {
+    color:darken($color-green-dark, 20%);
+    display: flex;
+    transform: rotate(-90deg) translateX(-50px);
+}
+.sidepanel__divider {
+    width: 1px;
+    height: 165px;
+    background-color: darken($color-green-dark, 20%);
+}
+.sidepanel__icon{
+    font-size: 32px;
+    color:darken($color-green-dark, 20%);
+}

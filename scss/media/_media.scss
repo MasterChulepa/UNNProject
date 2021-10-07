@@ -1,0 +1,36 @@
+@media (max-width: 1200px) {
+    .container{
+        max-width: 960px;
+    }
+    .arrow{
+        display: none;
+    }
+}
+@media (max-width: 960px) {
+    .container{
+        display: flex;
+        flex-wrap: wrap;
+        max-width: 640px;
+    }
+    .promotion{
+        flex-direction: column;
+    }
+    .offer{
+        flex-wrap: wrap;
+        .btn{
+            display: none;
+        }
+        .container{
+            flex-direction: column;
+        }
+        .offer__text,
+        .offer__advantages,
+        .offer__slider{
+            width: 100%;
+
+        }
+    }
+    .tabcontent__descr{
+        width: 140%;
+    }
+}
