@@ -1,37 +1,18 @@
+import MenuService from './menu_service.js';
+import showOffer from './element_appear.js';
+import TabsAction from './tabs.js';
+import changeBtnOnClick from './btn_click.js';
+
 window.addEventListener("DOMContentLoaded", () => {
+
     const tabs = document.querySelectorAll('.tabcontent'),
         tabsSelectors = document.querySelectorAll('.tabheader__item'),
         tabsParent = document.querySelector('.tabheader__items');
-
-    function hideTubs() {
-        tabs.forEach(item => {
-            item.style.display = 'none';
-        });
-
-        tabsSelectors.forEach(item => {
-            item.classList.remove('tabheader__item_active');
-        });
-    }
-
-    function showTubs(i = 0) {
-        tabs[i].style.display = 'block';
-        tabsSelectors[i].classList.add('tabheader__item_active');
-    }
-
-    hideTubs();
-    showTubs();
-    tabsParent.addEventListener('click', (e) => {
-        const target = e.target;
-        if (target && target.classList.contains('tabheader__item')) {
-            tabsSelectors.forEach((item, i) => {
-                if (target == item) {
-                    hideTubs();
-                    showTubs(i);
-                }
-            });
-        }
-    });
-
+    const menuService = new MenuService();
+    const tabsAction = new TabsAction(tabs, tabsSelectors, tabsParent);
+    tabsAction.hideTubs()
+    tabsAction.showTubs();
+    tabsAction.addTabEvent();
 
     // Scroll header
     const header = document.querySelector('.header');
@@ -51,95 +32,43 @@ window.addEventListener("DOMContentLoaded", () => {
     }
     window.addEventListener('scroll', floatHeader);
 
-
     //btn click
     const btns = document.querySelectorAll('.btn');
-    function changeBtnOnClick(btn) {
-        if (btn.classList.contains('btn_dark')) {
-            btn.classList.add('jello-horizontal', 'btn_dark_active');
-        } else {
-            if (!header.classList.contains('heder_active')) {
-                btn.classList.add('jello-horizontal', 'btn_active');
-            }
-        }
-        setTimeout(() => {
-            btn.classList.remove('jello-horizontal', 'btn_active', 'btn_dark_active');
-        }, 600);
-    }
     btns.forEach(item => {
         item.addEventListener('click', () => {
-            changeBtnOnClick(item);
+            changeBtnOnClick(item, header);
         });
     });
 
-    //Шаблонизируем карточки
-    class MenuCard {
-        constructor(src, alt, title, description, price, parent, ...classes) {
-            this.src = src;
-            this.alt = alt;
-            this.title = title;
-            this.description = description;
-            this.price = price;
-            this.transfer = 71;
-            this.transferPrice();
-            this.parent = document.querySelector(parent);
-            this.classes = classes;
-        }
-        getElement() {
-            return this.parent;
-        }
-        transferPrice() {
-            this.price = this.price * this.transfer;
-        }
-        render() {
-            const element = document.createElement('div');
-            if (!this.classes.length) {
-                this.element = 'menu__item';
-                element.classList.add(this.element);
-            } else {
-                this.classes.forEach(className => element.classList.add(className));
-            }
-            element.innerHTML =
-                `<img src= ${this.src} alt=${this.alt}>
-                <h3 class="menu__item-subtitle">${this.title}</h3>
-                <div class="menu__item-descr">${this.description}</div>
-                <div class="menu__item-divider"></div>
-                <div class="menu__item-price">
-                    <div class="menu__item-cost">Цена:</div>
-                    <div class="menu__item-total"><span>${this.price}</span> руб/день</div>
-                </div>`;
-            this.parent.append(element);
-        }
-    }
-    const menu = new MenuCard(
-        "img/menu/fitness_vec.svg",
-        "vegy",
-        'Меню “Фитнес”',
-        'Меню “Фитнес” - это верный путь к здоровой и активной жизни: в качестве ингредиентов только самые свежие овощи и фрукты. Мы тщательно просчитываем вашу потребность в к/б/ж/у и создаем лучшие блюда для вас.',
-        9,
-        '.menu__field .container'
-    );
-    menu.render();
 
-    new MenuCard(
-        "img/menu/premium_vec.svg",
-        "elite",
-        'Меню “Премиум”',
-        'В Меню “Премиум” мы используем не только роскошный дизайн упаковки, но и самые качественные ингредиенты. Морепродукты во всевозможных сочетаниях с гарнирами окунут Вас в мир высокой кухни!',
-        12,
-        '.menu__field .container'
-    ).render();
-    new MenuCard(
-        "img/menu/post_vec.svg",
-        "post",
-        'Меню “Постное”',
-        'Главный смысл поста – это не ограничение в еде, а очищение души. Однако здоровье души и телесное здоровье тесно связаны между собой. Наше “Постное” меню поможет хрестианину нести свой крест.',
-        10,
-        '.menu__field .container'
-    ).render();
+    function render(data) {
+        const parent = document.querySelector('.menu__field .container');
+        const element = document.createElement('div');
+        element.classList.add("menu__item", "tracking-in-expand-fwd-bottom");
+        element.innerHTML =
+            `<img src= ${data.src} alt=${data.alt}>
+            <h3 class="menu__item-subtitle">${data.title}</h3>
+            <div class="menu__item-descr">${data.description}</div>
+            <div class="menu__item-divider"></div>
+            <div class="menu__item-price">
+            <div class="menu__item-cost">Цена:</div>
+            <div class="menu__item-total"><span>${data.price}</span> руб/день</div>
+            </div>`;
+        parent.append(element);
+    }
+
+
+    menuService.getMenu("http://127.0.0.1:5000/menu").then(
+        result => {
+            result.forEach(data => render(data));
+        },
+        error => {
+            // вторая функция - запустится при вызове reject
+            alert("Rejected: " + error); // error - аргумент reject
+        });
 
     //Timer
-    const deadline = '2021-10-14';
+    const deadline = '2022-01-28';
 
     function getTimeRemaining(endtime) {
         const t = Date.parse(endtime) - Date.parse(new Date()),
@@ -187,114 +116,12 @@ window.addEventListener("DOMContentLoaded", () => {
 
     }
     setClock(deadline, '.timer');
-    //element appear
-    const offerText = document.querySelector('.offer__text'),
-        offerAdvantages = document.querySelector('.offer__advantages'),
-        titleCal = document.querySelector('[data-title_cal]'),
-        calc = document.querySelector('.calculating__field'),
-        offerSlider = document.querySelector('.offer__slider'),
-        offerBtn = document.querySelector('[data-offer_btn]'),
-        arrow = document.querySelector('.arrow'),
-        menuTitle = document.querySelector('[data-meny_title]'),
-        menuItem = document.querySelectorAll('.menu__item'),
-        titlePromotion = document.querySelectorAll('.promotion .title'),
-        promotionDescription = document.querySelector('.promotion__descr');
 
-
-    // в разработке
-    // function flatten(array) {
-    //     let  flattend = [];
-    //     (function flat(array) {
-    //         array.forEach(function (el) {
-    //             if (el.length > 1){ flat(el);}
-    //             else {flattend.push(el);}
-    //         });
-    //     })(array);
-    //     return flattend;
-    // }
-    // function apperensFromBottom(scroll, sec, setTimeoutStart, ...elements) {
-    //     let timeStart = null;
-    //     const elementsList = flatten(elements);
-    //     if (document.documentElement.scrollTop > scroll) {
-    //         elementsList.forEach((item, i) => {
-    //             if (i < setTimeoutStart) {
-    //                 item.classList.add('tracking-in-expand-fwd-bottom');
-    //             } else {
-    //                 timeStart = setTimeout(() => {
-    //                     item.classList.add('tracking-in-expand-fwd-bottom');
-    //                 }, sec);
-    //             }
-    //         });
-    //     } else {
-    //         elementsList.forEach(item => {
-    //             item.classList.remove('tracking-in-expand-fwd-bottom');
-    //         });
-    //         console.log(timeStart);
-    //         clearTimeout(timeStart);
-    //     }
-    // }
-    function showOffer() {
-        if (document.documentElement.scrollTop > 300) {
-            offerBtn.classList.add('fade-in-left');
-            offerSlider.classList.add('fade-in-right');
-            setTimeout(() => {
-                offerText.classList.add('fade-in-right');
-                offerAdvantages.classList.add('fade-in-left');
-            }, 400);
-            setTimeout(() => {
-                arrow.classList.add('fade-in');
-            }, 5000);
-        } else {
-            offerText.classList.remove('fade-in-right');
-            offerAdvantages.classList.remove('fade-in-left');
-            offerSlider.classList.remove('fade-in-right');
-            offerBtn.classList.remove('fade-in-left');
-            arrow.classList.remove('fade-in');
-        }
-        if (document.documentElement.scrollTop > 1300) {
-            setTimeout(() => {
-                calc.classList.add('tracking-in-expand-fwd-bottom');
-            }, 400);
-            titleCal.classList.add('tracking-in-expand-fwd-bottom');
-        } else {
-            calc.classList.remove('tracking-in-expand-fwd-bottom');
-            titleCal.classList.remove('tracking-in-expand-fwd-bottom');
-        }
-        if (document.documentElement.scrollTop > 2000) {
-            menuTitle.classList.add('tracking-in-expand-fwd-bottom');
-            setTimeout(() => {
-                menuItem.forEach(item => {
-                    item.classList.add('tracking-in-expand-fwd-bottom');
-                });
-            }, 300);
-        } else {
-            menuTitle.classList.remove('tracking-in-expand-fwd-bottom');
-            menuItem.forEach(item => {
-                item.classList.remove('tracking-in-expand-fwd-bottom');
-            });
-        }
-        if (document.documentElement.scrollTop > 2800) {
-            titlePromotion.forEach(item => {
-                item.classList.add('tracking-in-expand-fwd-bottom');
-            });
-            setTimeout(() => {
-                timer.classList.add('tracking-in-expand-fwd-bottom');
-                promotionDescription.classList.add('tracking-in-expand-fwd-bottom');
-            }, 300);
-        } else {
-            titlePromotion.forEach(item => {
-                item.classList.remove('tracking-in-expand-fwd-bottom');
-            });
-            promotionDescription.classList.remove('tracking-in-expand-fwd-bottom');
-            timer.classList.remove('tracking-in-expand-fwd-bottom');
-        }
-    }
     window.addEventListener('scroll', showOffer);
 
     //Modal
 
-    const btnCloseModal = document.querySelector('[data-close]'),
-        modal = document.querySelector('.modal');
+    const modal = document.querySelector('.modal');
 
     btns.forEach(item => {
         item.addEventListener('click', (e) => {
@@ -302,9 +129,8 @@ window.addEventListener("DOMContentLoaded", () => {
             openModal();
         });
     });
-    btnCloseModal.addEventListener('click', closeModal);
     modal.addEventListener('click', (e) => {
-        if (e.target == modal) {
+        if (e.target == modal || e.target.getAttribute('data-close') == '') {
             closeModal();
         }
     });
@@ -318,5 +144,121 @@ window.addEventListener("DOMContentLoaded", () => {
         if (e.code === 'Escape' && modal.classList.contains('show')) {
             closeModal();
         }
+    });
+
+
+    // Form
+    const forms = document.querySelectorAll('form');
+    const message = {
+        loading: 'Загрузка',
+        success: 'Успех',
+        failure: 'Что-то пошло не так'
+    };
+    forms.forEach(item => {
+        bindPostdata(item);
+    });
+
+    const postData = async (url, data) => {
+        const res = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Contant-type': 'application/json'
+            },
+            body: data
+        });
+        return await res.json();
+    };
+
+    function bindPostdata(form) {
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            console.log('submit');
+            const statusMessage = document.createElement('div');
+            const formData = new FormData(form);
+
+            const obj = {};
+            formData.forEach((value, key) => {
+                obj[key] = value;
+            });
+            //loading
+            statusMessage.textContent = message.loading;
+            form.append(statusMessage);
+            // 
+
+            postData("http://127.0.0.1:5000/user", JSON.stringify(obj))
+                .then(data => {
+                    console.log(data);
+                    showCallbackModal(message.success);
+                    form.reset();
+                    statusMessage.remove();
+                }).catch(() => {
+                    showCallbackModal(message.failure);
+                }).finally(() => {
+                    form.reset();
+                });
+        });
+    }
+
+    function showCallbackModal(message) {
+        const modalDialog = document.querySelector('.modal__dialog');
+        modalDialog.classList.add('hide');
+        openModal();
+
+        const thxModal = document.createElement('div');
+        thxModal.classList.add('modal__dialog');
+        thxModal.innerHTML = `
+        <div class = "modal__content">
+            <div data-close class="modal__close">&times;</div>
+            <div class="modal__title">${message}</div>
+        </div>`;
+        modal.append(thxModal);
+        setTimeout(() => {
+            thxModal.remove();
+            modalDialog.classList.add('show');
+            modalDialog.classList.remove('hide');
+            closeModal();
+        }, 2000);
+    }
+
+    //slider
+    const slides = document.querySelectorAll('.offer__slide'),
+          prev = document.querySelector('.offer__slider-prev'),
+          next = document.querySelector('.offer__slider-next'),
+          current = document.querySelector('#current'), 
+          total = document.querySelector('#total');
+    let slideIndex = 1;
+    showSlides(slideIndex);
+
+    if (slides.length < 10){
+        total.textContent = `0${slides.length}`;
+    }else{
+        total.textContent = slides.length;
+    }
+
+    function showSlides(n) {
+        if (n > slides.length) {
+            slideIndex = 1;
+        }
+        if (n < 1) {
+            slideIndex = slides.length;
+        }
+        
+        slides.forEach(item => item.style.display = 'none');
+        slides[slideIndex - 1].style.display = 'block';
+
+        if (slides.length < 10){
+            current.textContent = `0${slideIndex}`;
+        }else{
+            current.textContent = slideIndex;
+        }
+    }
+    function changeSlide(n) {
+        showSlides(slideIndex += n);
+    }
+    prev.addEventListener('click', () => {
+        changeSlide(-1);
+    });
+    next.addEventListener('click', () => {
+        changeSlide(1);
     });
 });
