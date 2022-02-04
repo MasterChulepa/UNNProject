@@ -53,14 +53,16 @@
                 <div class="tabcontent">
                     <img src="img/tabs/fitness.jpg" alt="vegy">
                     <div class="tabcontent__descr">
-                        Меню “Фитнес” - это верный путь к здоровой и активной жизни: в качестве ингредиентов только самые свежие овощи и фрукты. 
+                        Меню “Фитнес” - это верный путь к здоровой и активной жизни: в качестве ингредиентов только
+                        самые свежие овощи и фрукты.
                         Мы тщательно просчитываем вашу потребность в к/б/ж/у и создаем лучшие блюда для вас.
                     </div>
                 </div>
                 <div class="tabcontent">
                     <img src="img/tabs/premium.jpg" alt="elite">
                     <div class="tabcontent__descr">
-                        В Меню “Премиум” мы используем не только роскошный дизайн упаковки, но и самые качественные ингредиенты. 
+                        В Меню “Премиум” мы используем не только роскошный дизайн упаковки, но и самые качественные
+                        ингредиенты.
                         Морепродукты во всевозможных сочетаниях с гарнирами окунут Вас в мир высокой кухни!
                     </div>
                 </div>
@@ -75,7 +77,7 @@
                 <div class="tabcontent">
                     <img src="img/tabs/vegy.jpg" alt="vegy">
                     <div class="tabcontent__descr">
-                        Меню "Вегетарианское" - это полностью сбалансированный рацион, 
+                        Меню "Вегетарианское" - это полностью сбалансированный рацион,
                         наполненный всеми необходимыми полезными веществами.
                         Полная гармония с природой в каждом элементе!<br> Все будет Ом!
                     </div>
@@ -103,10 +105,12 @@
             <div class="offer__text">
                 <h2 class="title">Что мы можем вам предложить?</h2>
                 <div class="offer__descr">
-                    Наша основная идея - это правильное питание. Мы постоянно ищем новые возможности, как сделать ежедневное питание 
-                    всё более и более разнообразными, полезным и вкусным. Воспользуйтесь нашим удобным калькулятором и мы без труда 
+                    Наша основная идея - это правильное питание. Мы постоянно ищем новые возможности, как сделать
+                    ежедневное питание
+                    всё более и более разнообразными, полезным и вкусным. Воспользуйтесь нашим удобным калькулятором и
+                    мы без труда
                     расчетем БЖУ, калорийность, объем порций и прочие важные,
-                    но скучные аспекты за Вас. Вам же останется только наслаждаться вкусной и полезной едой. 
+                    но скучные аспекты за Вас. Вам же останется только наслаждаться вкусной и полезной едой.
                 </div>
             </div>
         </div>
@@ -135,8 +139,8 @@
                         <i class="fas fa-share"></i>
                     </div>
                 </div>
-                <div class="offer__slider-inner">
-                    <div class="offer__slider-wrapper">
+                <div class="offer__slider-wrapper">
+                    <div class="offer__slider-inner">
                         <div class="offer__slide">
                             <img src="img/slider/foodpic1.jpg" alt="pepper">
                         </div>
@@ -166,8 +170,8 @@
                     Ваш пол
                 </div>
                 <div class="calculating__choose" id="gender">
-                    <div class="calculating__choose-item calculating__choose-item_active">Женщина</div>
-                    <div class="calculating__choose-item">Мужчина</div>
+                    <div id = "female" class="calculating__choose-item calculating__choose-item_active">Женщина</div>
+                    <div id = "male" class="calculating__choose-item">Мужчина</div>
                 </div>
 
                 <div class="calculating__subtitle">
@@ -183,11 +187,11 @@
                     Выберите вашу физическая активность
                 </div>
                 <div class="calculating__choose calculating__choose_big">
-                    <div id="low" class="calculating__choose-item">Низкая активность </div>
-                    <div id="small" class="calculating__choose-item calculating__choose-item_active">Невысокая
+                    <div data-ratio = "1.2" id="low" class="calculating__choose-item">Низкая активность </div>
+                    <div data-ratio = "1.375" id="small" class="calculating__choose-item calculating__choose-item_active">Невысокая
                         активность</div>
-                    <div id="medium" class="calculating__choose-item">Умеренная активность</div>
-                    <div id="high" class="calculating__choose-item">Высокая активность</div>
+                    <div data-ratio = "1.55" id="medium" class="calculating__choose-item">Умеренная активность</div>
+                    <div data-ratio = "1.725" id="high" class="calculating__choose-item">Высокая активность</div>
                 </div>
 
                 <div class="calculating__divider"></div>
@@ -295,11 +299,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Mulish&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
-    <script type="module" src='js/element_appear.js'> </script>
-    <script type="module" src="js/menu_service.js"></script>
-    <script type="module" src='js/script.js'> </script>
-    <script type="module" src='js/tabs.js'> </script>
-    <script type="module" src='js/btn_click.js'> </script>
+    <script type="module" src='js/bundle.js'> </script>
 </body>
 
 </html>
